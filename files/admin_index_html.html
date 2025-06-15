@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - Prize Draw Upload</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background: #f9f9f9;
+    }
+    h2 {
+      color: #333;
+    }
+    form {
+      background: #fff;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    input[type="file"] {
+      margin-bottom: 0.5rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .result {
+      margin-top: 1rem;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <h2>Upload Employees Excel</h2>
+  <form id="upload-employees" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".xlsx" required />
+    <input type="hidden" name="type" value="employees" />
+    <button type="submit">Upload Employees</button>
+    <div class="result" id="result-employees"></div>
+  </form>
+
+  <h2>Upload Prizes Excel</h2>
+  <form id="upload-prizes" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".xlsx" required />
+    <input type="hidden" name="type" value="prizes" />
+    <button type="submit">Upload Prizes</button>
+    <div class="result" id="result-prizes"></div>
+  </form>
+
+  <script>
+    function handleUpload(formId, resultId) {
+      const form = document.getElementById(formId);
+      const result = document.getElementById(resultId);
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+
+        const response = await fetch("../admin/upload.php", {
+          method: "POST",
+          body: formData,
+        });
+
+        const text = await response.text();
+        result.textContent = text;
+      });
+    }
+
+    handleUpload("upload-employees", "result-employees");
+    handleUpload("upload-prizes", "result-prizes");
+  </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZenithCodigo Prize Draw Event</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #f0f2f5, #ffffff);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      background: #1f2937;
+      color: white;
+      padding: 2rem 1rem;
+    }
+    header img {
+      height: 60px;
+      margin-bottom: 0.5rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    .slider {
+      margin: 2rem auto;
+      max-width: 600px;
+      position: relative;
+    }
+    .slider img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    #draw-btn {
+      margin: 2rem auto;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      color: white;
+      background: #4f46e5;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    #draw-btn:hover {
+      background: #3730a3;
+    }
+    #winner {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+      color: #059669;
+    }
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../assets/logo.png" alt="Company Logo" />
+    <h1>ZenithCodigo Celebration Draw</h1>
+  </header>
+
+  <section class="slider">
+    <img id="prizeImage" src="../assets/prizes/prize1.jpg" alt="Prize" />
+  </section>
+
+  <button id="draw-btn">🎉 Start Draw</button>
+  <div id="winner"></div>
+
+  <footer>
+    &copy; 2025 ZenithCodigo. All rights reserved.
+  </footer>
+
+  <script>
+    const prizes = [
+      "prize1.jpg",
+      "prize2.jpg",
+      "prize3.jpg",
+      "prize4.jpg",
+    ];
+    let index = 0;
+    const imageElement = document.getElementById("prizeImage");
+
+    setInterval(() => {
+      index = (index + 1) % prizes.length;
+      imageElement.src = `../assets/prizes/${prizes[index]}`;
+    }, 3000);
+
+    document.getElementById("draw-btn").addEventListener("click", async () => {
+      const response = await fetch("../admin/draw.php");
+      const result = await response.text();
+      document.getElementById("winner").innerHTML = `<strong>🎊 Winner:</strong> ${result}`;
+    });
+  </script>
+</body>
+</html>
